@@ -39,7 +39,7 @@ def reverse(pdfFileName):
     with open(pdfFileName, 'rb') as readfile:
         input_pdf = PdfReader(readfile)
         total_pages = len(input_pdf.pages)
-        for page in range(total_pages - 1, -1, -1):
+        for page in range(total_pages, 0, -1): # used like in comment here: https://stackoverflow.com/a/5425501/12946000
             output_pdf.add_page(input_pdf.pages[page])
         reversedName = f"reversed_{pdfFileName}.pdf"
         with open(reversedName, "wb") as writefile:
