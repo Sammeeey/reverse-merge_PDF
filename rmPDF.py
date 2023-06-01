@@ -47,6 +47,24 @@ def reverse(pdfFileName):
 
         return reversedName
 
+def pingPong(pdfFileName1, pdfFileName2):
+    """
+    after each page of 2st pdf file insert page of 2nd pdf file
+    """
+    output_pdf = PdfWriter()
+
+    with open(pdfFileName1, 'rb') as firstFile:
+        input_pdf = PdfReader(firstFile)
+        total_pages = len(input_pdf.pages)
+        for page in range(1, total_pages+1): # used like in comment here: https://stackoverflow.com/a/5425501/12946000
+            
+            output_pdf.add_page(input_pdf.pages[page])
+        reversedName = f"reversed_{pdfFileName}.pdf"
+        with open(reversedName, "wb") as writefile:
+            output_pdf.write(writefile)
+
+        return reversedName
+
 
 def merge(pdfs: list):
     merger = PdfMerger()
