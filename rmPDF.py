@@ -23,6 +23,7 @@ def findByCriterions(*criterions, dirPath=Path.cwd()): # derived from verticalHi
     """
 
     # identify all files in target directory, which match certain criterion (originally all those which match glob pattern)
+    dirPath = Path(dirPath)
     filePathList = []
     for criterion in criterions:
         print(f'Finding all files in...\n{dirPath}\n...which match this criterion:{criterion}\n')
