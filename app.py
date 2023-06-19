@@ -48,7 +48,7 @@ def upload_file():
     '''
 
 @app.route('/', methods=['GET', 'POST'])
-def upload_multiple():  # flask upload multiple files: https://stackoverflow.com/a/11817318/12946000 & https://youtu.be/krcyh42ShLg
+def upload_multiple():  # flask upload multiple files: https://stackoverflow.com/a/11817318/12946000 & https://youtu.be/krcyh42ShLg & https://flask.palletsprojects.com/en/2.3.x/patterns/fileuploads/
     print(f'request.files: {request.files}')
 
     upload_files = request.files.getlist("file")
@@ -82,7 +82,7 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
 
 
 
-# download uploaded file as is
+# download uploaded file as is: https://stackoverflow.com/a/42137385/12946000
 @app.route('/uploads/<name>')
 def download_file(name):
     return send_from_directory(app.config["UPLOAD_FOLDER"], name)
