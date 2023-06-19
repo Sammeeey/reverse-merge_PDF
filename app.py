@@ -20,7 +20,7 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/upload-one', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
@@ -47,7 +47,7 @@ def upload_file():
     </form>
     '''
 
-@app.route('/upload-multiple', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def upload_multiple():  # flask upload multiple files: https://stackoverflow.com/a/11817318/12946000 & https://youtu.be/krcyh42ShLg
     print(f'request.files: {request.files}')
 
@@ -72,7 +72,7 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
                 # return redirect(url_for('download_file', name=filename))    # flask url_for(): https://stackoverflow.com/a/7478705/12946000
     return '''
     <!doctype html>
-    <title>Upload new File</title>
+    <title>Upload new Files</title>
     <h1>Upload new File</h1>
     <form method=post enctype=multipart/form-data>
       <input type=file name=file multiple>
