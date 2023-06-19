@@ -72,7 +72,8 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
                 # return redirect(url_for('download_file', name=filename))    # flask url_for(): https://stackoverflow.com/a/7478705/12946000
 
     # find uploaded files in upload folder
-    findFiles()
+    uploadFileList = findFiles()
+    makeFileNameList(uploadFileList)
     return '''
     <!doctype html>
     <title>Upload new Files</title>
@@ -86,9 +87,17 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
 # basically rmPdfScript.py
 from rmPDF import *
 
-def findFiles():
+def findFiles() -> list:
     pdfList = findByCriterions("Bild*.pdf", dirPath=Path(UPLOAD_FOLDER))
     print(f'pdfList: {pdfList}')
+    return pdfList
+
+def makeFileNameList(fileList):
+    pdfNameList = []
+    for path in fileList:
+        pathName = path.name
+        pdfNameList.append(pathName)
+    print(f'pdfNameList: {pdfNameList}')
 
 
 
