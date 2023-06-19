@@ -87,7 +87,10 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
 def download_file(name):
     return send_from_directory(app.config["UPLOAD_FOLDER"], name)
 
-
+# download processed file
+@app.route('/uploads/processed/<hash>')
+def download_processed(hash):
+    return
 
 
 
