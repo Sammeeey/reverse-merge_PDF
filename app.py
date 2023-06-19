@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, Request
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'super secret key'
 app.debug = True
 app.config['SESSION_TYPE'] = 'filesystem'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+# app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -70,6 +70,9 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 # return redirect(url_for('download_file', name=filename))    # flask url_for(): https://stackoverflow.com/a/7478705/12946000
+
+    # find uploaded files in upload folder
+    findFiles()
     return '''
     <!doctype html>
     <title>Upload new Files</title>
@@ -79,6 +82,13 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
       <input type=submit value=Upload>
     </form>
     '''
+
+# basically rmPdfScript.py
+from rmPDF import *
+
+def findFiles():
+    pdfList = findByCriterions("Bild*.pdf", dirPath=Path(UPLOAD_FOLDER))
+    print(f'pdfList: {pdfList}')
 
 
 
