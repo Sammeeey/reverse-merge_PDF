@@ -45,7 +45,7 @@ def reverse(pdfFileName):
             # print(input_pdf.pages)
             # print(page)
             output_pdf.add_page(input_pdf.pages[page-1])
-        reversedName = f"reversed_{pdfFileName}.pdf"
+        reversedName = f"reversed_{pdfFileName}"
         with open(reversedName, "wb") as writefile:
             output_pdf.write(writefile)
 
