@@ -73,7 +73,8 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
 
     # find uploaded files in upload folder
     uploadFileList = findFiles()
-    makeFileNameList(uploadFileList)
+    uploadFilenameList = makeFileNameList(uploadFileList)
+    sortedFileNameList = sortFileNameList(uploadFilenameList)
     return '''
     <!doctype html>
     <title>Upload new Files</title>
@@ -92,12 +93,38 @@ def findFiles() -> list:
     print(f'pdfList: {pdfList}')
     return pdfList
 
-def makeFileNameList(fileList):
+def makeFileNameList(fileList) -> list:
     pdfNameList = []
     for path in fileList:
         pathName = path.name
         pdfNameList.append(pathName)
     print(f'pdfNameList: {pdfNameList}')
+    return pdfNameList
+
+def sortFileNameList(fileNameList, toMove='Bild.pdf') -> list:
+    # # sort names of pdf files inside list descending (based on integer in file format `Bild (10).pdf` if(!) integer available, else ignore respective item (Bild.pdf)!?)
+    # sortedNameList = sorted(fileNameList, key=lambda x: int(x.split('_')[-1].split('.')[0] if '_' in x else 0, reverse=True))
+    # Using sorted() function with reverse=True and handling non-digit elements
+    sortedNameList = sorted(fileNameList, key=lambda x: int(''.join(filter(str.isdigit, x))) if any(char.isdigit() for char in x) else float('inf'), reverse=True)  # https://chat.openai.com/share/c4b0ab8c-676a-486f-af98-2772d7213b88
+    print(sortedNameList)
+    # move `Bild.pdf` to end of sorted list manually: https://www.geeksforgeeks.org/python-move-element-to-end-of-the-list/
+    try:
+        sortedNameList.append(sortedNameList.pop(sortedNameList.index(toMove)))
+        print(f'sortedNameList: {sortedNameList}')
+    except ValueError as ve:
+        print(f'{toMove} not found in sortedNameList.\nFollowing ValueError occured: {ve}')
+    return sortedNameList
+
+# reversedNameList = []
+# # reverse order of every single pdf
+# for pdf in sortedNameList:
+#     reversedPdf = reverse(pdf)
+#     print(f"Reversed file {pdf} into {reversedPdf}")
+#     reversedNameList.append(reversedPdf)
+# print(f"Reversed files: {reversedNameList}")
+
+# mergedPdf = merge(reversedNameList)
+# print(f"Merged files {reversedNameList} into {mergedPdf}")
 
 
 
