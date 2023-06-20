@@ -72,10 +72,10 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
                 # return redirect(url_for('download_file', name=filename))    # flask url_for(): https://stackoverflow.com/a/7478705/12946000
 
     # find uploaded files in upload folder
-    uploadFileList = findFiles()
-    uploadFilenameList = makeFileNameList(uploadFileList)
-    sortedFileNameList = sortFileNameList(uploadFilenameList)
-    reversedFilenameList = reverseFiles(sortedFileNameList)
+    uploadFileList = findFiles()    # TODO: can be replaced by using Flask.request.files!?
+    uploadFilenameList = makeFileNameList(uploadFileList)   # TODO: can be replaced by using Flask.request.files!?
+    sortedFilenameList = sortFileNameList(uploadFilenameList)
+    reversedFilenameList = reverseFiles(sortedFilenameList)
     mergeFiles(reversedFilenameList)
     return '''
     <!doctype html>
