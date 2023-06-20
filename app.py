@@ -75,6 +75,7 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
     uploadFileList = findFiles()
     uploadFilenameList = makeFileNameList(uploadFileList)
     sortedFileNameList = sortFileNameList(uploadFilenameList)
+    reverseFiles(sortedFileNameList)
     return '''
     <!doctype html>
     <title>Upload new Files</title>
@@ -115,13 +116,16 @@ def sortFileNameList(fileNameList, toMove='Bild.pdf') -> list:
         print(f'{toMove} not found in sortedNameList.\nFollowing ValueError occured: {ve}')
     return sortedNameList
 
-# reversedNameList = []
-# # reverse order of every single pdf
-# for pdf in sortedNameList:
-#     reversedPdf = reverse(pdf)
-#     print(f"Reversed file {pdf} into {reversedPdf}")
-#     reversedNameList.append(reversedPdf)
-# print(f"Reversed files: {reversedNameList}")
+def reverseFiles(sortedNameList, dirPath=Path(UPLOAD_FOLDER)) -> list:
+    os.chdir(dirPath)
+    reversedNameList = []
+    # reverse order of every single pdf
+    for pdf in sortedNameList:
+        reversedPdf = reverse(pdf)
+        print(f"Reversed file {pdf} into {reversedPdf}")
+        reversedNameList.append(reversedPdf)
+    print(f"Reversed files: {reversedNameList}")
+    return reversedNameList
 
 # mergedPdf = merge(reversedNameList)
 # print(f"Merged files {reversedNameList} into {mergedPdf}")
