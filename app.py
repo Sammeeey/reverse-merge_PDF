@@ -69,9 +69,18 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 print(filename)
-                print(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                uploadFilePath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                print(uploadFilePath)
+                
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 # return redirect(url_for('download_file', name=filename))    # flask url_for(): https://stackoverflow.com/a/7478705/12946000
+
+                # convert .tiff/.tif to pdf
+                try:
+                    pdfPath = tiff_to_pdf(str(uploadFilePath))
+                    print(f'tif/tiff now {pdfPath}')
+                except UnboundLocalError as ule:
+                    print(f'{ule}\nno tiff extension (can only be pdf then, because only pdf, tif & tiff allowed)')
 
     # find uploaded files in upload folder
     uploadFileList = findFiles()    # TODO: can be replaced by using Flask.request.files!?
