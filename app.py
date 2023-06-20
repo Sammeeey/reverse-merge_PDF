@@ -68,6 +68,8 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
         for file in upload_files:
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
+                print(filename)
+                print(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 # return redirect(url_for('download_file', name=filename))    # flask url_for(): https://stackoverflow.com/a/7478705/12946000
 
@@ -75,8 +77,8 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
     uploadFileList = findFiles()    # TODO: can be replaced by using Flask.request.files!?
     uploadFilenameList = makeFileNameList(uploadFileList)   # TODO: can be replaced by using Flask.request.files!?
     sortedFilenameList = sortFileNameList(uploadFilenameList)
-    reversedFilenameList = reverseFiles(sortedFilenameList)
-    mergeFiles(reversedFilenameList)
+    # reversedFilenameList = reverseFiles(sortedFilenameList)
+    # mergeFiles(reversedFilenameList)
     return '''
     <!doctype html>
     <title>Upload new Files</title>
