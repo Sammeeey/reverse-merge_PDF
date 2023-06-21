@@ -97,14 +97,21 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
         # deleteAndDownload(app.config['UPLOAD_FOLDER'], resultFileName)
         return redirect(url_for('deleteAndDownload', directory=app.config['UPLOAD_FOLDER'], name=resultFileName))    # flask url_for(): https://stackoverflow.com/a/7478705/12946000
 
-    return '''
+    return f'''
     <!doctype html>
-    <title>Upload new Files</title>
-    <h1>Upload new File</h1>
+    <title>Reverse-Merge PDF's</title>
+    <h1>Upload new Files</h1>
+    <p>reverses PDFs & eventually merges them into a single, downloadable file (meant to reverse-merge scanned tif-files on Windows)</p>
+    <p>only works for unix pattern "Bild*.pdf"</p>
+    <p>allowed file types: {ALLOWED_EXTENSIONS}</p>
+    <p>if file-type "tif" or "tiff": converts file to PDF</p>
     <form method=post enctype=multipart/form-data>
       <input type=file name=file multiple>
       <input type=submit value=Upload>
     </form>
+    <p>
+        <a href="https://github.com/Sammeeey/reverse-merge_PDF" target="_blank">reverse-merge project on Github</a>
+    </p>
     '''
 
 # python tiff to pdf inspired by https://stackoverflow.com/a/68336325
