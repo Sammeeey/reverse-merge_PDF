@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory, Request
+from flask import Flask, request, send_from_directory, Request, send_file
 
 app = Flask(__name__)
 
@@ -76,7 +76,6 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
                 savePath = Path(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 print(f'savePath: {savePath}')
                 file.save(savePath)
-                # return redirect(url_for('download_file', name=filename))    # flask url_for(): https://stackoverflow.com/a/7478705/12946000
 
                 # convert .tiff/.tif to pdf
                 try:
@@ -94,6 +93,9 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
         resultFileName = 'merged.pdf'
         merge(reversedFilenameList, mergedFileName=resultFileName)
         os.chdir(ROOT_DIR)
+
+        # deleteAndDownload(app.config['UPLOAD_FOLDER'], resultFileName)
+        return redirect(url_for('deleteAndDownload', directory=app.config['UPLOAD_FOLDER'], name=resultFileName))    # flask url_for(): https://stackoverflow.com/a/7478705/12946000
 
     return '''
     <!doctype html>
@@ -180,10 +182,32 @@ def reverseFiles(sortedNameList, dirPath=Path(UPLOAD_FOLDER)) -> list:
 
 
 
+import io
+import glob
+
 # download uploaded file as is: https://stackoverflow.com/a/42137385/12946000
-@app.route('/uploads/<name>')
-def download_file(name):
-    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
+# delete uploaded files after processing: https://stackoverflow.com/a/59232222/12946000
+@app.route('/<directory>/<name>')
+def deleteAndDownload(directory, name):   
+    filePath = os.path.join(directory, name)
+    # save binary of result file
+    return_data = io.BytesIO()
+    with open(filePath, 'rb') as fo:
+        return_data.write(fo.read())
+    # (after writing, cursor will be at last byte, so move it to start)
+    return_data.seek(0)
+
+    # empty upload directory (delete all files in upload folder) 
+    files = glob.glob(directory + '/*')
+    for file in files:
+        os.remove(file)
+
+    # download saved result file
+    return send_file(return_data, mimetype='application/pdf',
+                     download_name=name)
+
+    # return send_from_directory(app.config["UPLOAD_FOLDER"], name)
+
 
 # download processed file
 @app.route('/uploads/processed/<hash>')
