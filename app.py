@@ -7,6 +7,7 @@ from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = './uploads'
+ROOT_DIR = os.getcwd()
 ALLOWED_EXTENSIONS = {'pdf', 'tif', 'tiff'}
 
 app = Flask(__name__)
@@ -72,7 +73,9 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
                 uploadFilePath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 print(uploadFilePath)
                 
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                savePath = Path(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                print(f'savePath: {savePath}')
+                file.save(savePath)
                 # return redirect(url_for('download_file', name=filename))    # flask url_for(): https://stackoverflow.com/a/7478705/12946000
 
                 # convert .tiff/.tif to pdf
@@ -86,8 +89,10 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
     uploadFileList = findFiles()    # TODO: can be replaced by using Flask.request.files!?
     uploadFilenameList = makeFileNameList(uploadFileList)   # TODO: can be replaced by using Flask.request.files!?
     sortedFilenameList = sortFileNameList(uploadFilenameList)
-    # reversedFilenameList = reverseFiles(sortedFilenameList)
-    # mergeFiles(reversedFilenameList)
+    os.chdir(app.config['UPLOAD_FOLDER'])
+    reversedFilenameList = reverseFiles(sortedFilenameList)
+    mergeFiles(reversedFilenameList)
+    os.chdir(ROOT_DIR)
     return '''
     <!doctype html>
     <title>Upload new Files</title>
@@ -162,7 +167,6 @@ def sortFileNameList(fileNameList, toMove='Bild.pdf') -> list:
     return sortedNameList
 
 def reverseFiles(sortedNameList, dirPath=Path(UPLOAD_FOLDER)) -> list:
-    os.chdir(dirPath)
     reversedNameList = []
     # reverse order of every single pdf
     for pdf in sortedNameList:
