@@ -85,14 +85,16 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
                 except UnboundLocalError as ule:
                     print(f'{ule}\nno tiff extension (can only be pdf then, because only pdf, tif & tiff allowed)')
 
-    # find uploaded files in upload folder
-    uploadFileList = findFiles()    # TODO: can be replaced by using Flask.request.files!?
-    uploadFilenameList = makeFileNameList(uploadFileList)   # TODO: can be replaced by using Flask.request.files!?
-    sortedFilenameList = sortFileNameList(uploadFilenameList)
-    os.chdir(app.config['UPLOAD_FOLDER'])
-    reversedFilenameList = reverseFiles(sortedFilenameList)
-    mergeFiles(reversedFilenameList)
-    os.chdir(ROOT_DIR)
+        # find uploaded files in upload folder
+        uploadFileList = findFiles()    # TODO: can be replaced by using Flask.request.files!?
+        uploadFilenameList = makeFileNameList(uploadFileList)   # TODO: can be replaced by using Flask.request.files!?
+        sortedFilenameList = sortFileNameList(uploadFilenameList)
+        os.chdir(app.config['UPLOAD_FOLDER'])
+        reversedFilenameList = reverseFiles(sortedFilenameList)
+        resultFileName = 'merged.pdf'
+        merge(reversedFilenameList, mergedFileName=resultFileName)
+        os.chdir(ROOT_DIR)
+
     return '''
     <!doctype html>
     <title>Upload new Files</title>
@@ -175,10 +177,6 @@ def reverseFiles(sortedNameList, dirPath=Path(UPLOAD_FOLDER)) -> list:
         reversedNameList.append(reversedPdf)
     print(f"Reversed files: {reversedNameList}")
     return reversedNameList
-
-def mergeFiles(reversedNameList):
-    mergedPdf = merge(reversedNameList)
-    print(f"Merged files {reversedNameList} into {mergedPdf}")
 
 
 

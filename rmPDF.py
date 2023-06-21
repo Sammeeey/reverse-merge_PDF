@@ -52,14 +52,14 @@ def reverse(pdfFileName):
         return reversedName
 
 
-def merge(pdfs: list):
+def merge(pdfs: list, mergedFileName='merged.pdf'):
     merger = PdfMerger()
 
     for pdf in pdfs:
         merger.append(pdf)
 
-    resultName = 'merged.pdf'
-    merger.write(resultName)
+    merger.write(mergedFileName)
     merger.close()
+    print(f"Merged files {pdfs} into {mergedFileName}")
 
-    return resultName
+    return mergedFileName
