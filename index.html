@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Reverse-Merge PDF's</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.23.3/full/pyodide.js"></script>
+  </head>
+
+  
+  <body>
+    <h1>Upload new Files</h1>
+    <p>reverses PDFs & eventually merges them into a single, downloadable file (meant to reverse-merge scanned tif-files on Windows)</p>
+    <p>only works for unix pattern "Bild*.pdf"</p>
+    <p>allowed file types: {ALLOWED_EXTENSIONS}</p>
+    <p>if file-type "tif" or "tiff": converts file to PDF</p>
+    <form method="post" enctype="multipart/form-data">
+    <input type="file" name="file" multiple>
+    <input type="submit" value=Upload>
+    </form>
+    <p>
+        <a href="https://github.com/Sammeeey/reverse-merge_PDF" target="_blank">reverse-merge project on Github</a>
+    </p>
+
+    <hr>
+    <p>
+      You can execute any Python code. Just enter something in the box below and
+      click the button.
+    </p>
+    <input id="code" value="sum([1, 2, 3, 4, 5])" />
+    <button onclick="evaluatePython()">Run</button>
+    <br />
+    <br />
+    <div>Output:</div>
+    <textarea id="output" style="width: 100%;" rows="6" disabled></textarea>
+
+    <script>
+      const output = document.getElementById("output");
+      const code = document.getElementById("code");
+
+      function addToOutput(s) {
+        output.value += ">>>" + code.value + "\n" + s + "\n";
+      }
+
+      output.value = "Initializing...\n";
+      // init Pyodide
+      async function main() {
+        let pyodide = await loadPyodide();
+        output.value += "Ready!\n";
+        return pyodide;
+      }
+      let pyodideReadyPromise = main();
+
+      async function evaluatePython() {
+        let pyodide = await pyodideReadyPromise;
+        try {
+          let output = pyodide.runPython(code.value);
+          addToOutput(output);
+        } catch (err) {
+          addToOutput(err);
+        }
+      }
+    </script>
+  </body>
+</html>
