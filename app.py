@@ -5,6 +5,7 @@ app = Flask(__name__)
 import os
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
+from time import sleep
 
 UPLOAD_FOLDER = './uploads'
 ROOT_DIR = os.getcwd()
@@ -73,9 +74,11 @@ def upload_multiple():  # flask upload multiple files: https://stackoverflow.com
                 uploadFilePath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
                 print(uploadFilePath)
                 
-                savePath = Path(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                savePath = Path(os.path.join(ROOT_DIR, app.config['UPLOAD_FOLDER'], filename))
                 print(f'savePath: {savePath}')
                 file.save(savePath)
+                # sleep(10)
+                print(f'glob upload folder: {glob.glob(app.config["UPLOAD_FOLDER"]+ "/*")}')
 
                 # convert .tiff/.tif to pdf
                 try:
