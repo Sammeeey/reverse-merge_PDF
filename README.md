@@ -7,7 +7,7 @@ Then merges them into one large PDF & saves it to working directory.
 
 ## Installation (on windows 10)
 1. clone repo
-2. enter repo directory: `cd rmPDF`
+2. enter repo directory: `cd reverse-merge_PDF`
 3. create virtual environment: `py -m venv venv`
 4. activate virtual environment: `venv\Scripts\activate.bat`
 5. update pip: `py -m pip install --upgrade pip`
@@ -15,8 +15,8 @@ Then merges them into one large PDF & saves it to working directory.
 7. run program as described below (*Usage*)
 
 ## Usage (on windows 10)
-1.  have multuiple multi-pages PDFs in working directory
-2. run `py rmPDF.py`
+1. have multuiple multi-pages PDFs in working directory
+2. run `py rmPdfScript.py`
 
 ## Quickstart
 <!-- 1. run `py ocr.py`
@@ -26,7 +26,7 @@ Then merges them into one large PDF & saves it to working directory.
 ## What happens
 1. Finds all files based on certain criterion in directory (currently `Bild*.pdf`) 
 2. Reverses order of pages in PDFs
-3.  Merges reverse-ordered PDFs into one final PDF (currently `merged.pdf`)
+3. Merges reverse-ordered PDFs into one final PDF (currently `merged.pdf`)
 
 ## Resources
 - [reverse](https://stackoverflow.com/a/5425501)
